@@ -50,6 +50,7 @@ This script is designed to facilitate the collection and organization of trench 
 
 - Ensure all mandatory fields are filled out accurately to generate a complete CSV file.
 - For the first context, first press the "Add Context" button and then begin by entering data directly under "Trench Sheet Details." Use the "Add Context" button for subsequent context details.
+- The 'index.html' file consolidates all necessary HTML, CSS, and JavaScript code, streamlining the app's functionality on smartphones. This single file download ensures a seamless user experience, minimizing potential setup complications.
 
 ## Contributing
 

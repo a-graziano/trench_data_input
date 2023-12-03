@@ -57,4 +57,4 @@ Feel free to contribute to this project by suggesting improvements or reporting 
 
 ## License
 
-This script is licensed under the [MIT License](LICENSE.md).
+This script is licensed under the [MIT License](LICENSE).

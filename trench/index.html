@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Trench Sheet Data Collection</title>
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="stylesheet.css">
+
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: white;
+            margin: 0;
+            padding-bottom: 60px; /* Adjust this value to match your footer's height */
+            
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        /* Set the background color of the Trench Sheet Headers and Trench Sheet Details elements to black */
+        .trench-sheet-headers,
+        .trench-sheet-details {
+          background-color: black;
+        }
+        
+        /* Set the text color of the Trench Sheet Headers and Trench Sheet Details elements to orange */
+        .trench-sheet-headers,
+        .trench-sheet-details {
+          color: orange;
+        }
+        
+        
+        h3 {
+            background-color: black;
+            color: white;
+            padding: 5px; /* Adjust padding as needed */
+            margin-top: 10px; /* Adjust margin as needed */
+            margin-bottom: 10px; /* Adjust margin as needed */
+        }
+        
+        form label {
+            font-weight: bold;
+        }
+        
+        form input, form select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 1em;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .details-set {
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        
+        .details-set label, .details-set input, .details-set select {
+            display: block;
+            margin-bottom: 10px;
+        }
+        
+        /* Set the text color of all label elements to orange */
+        label {
+            color: orange;
+          }
+        
+        .add-details-btn {
+            background-color: #D97925;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1em;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .add-details-btn:hover {
+            background-color: #a6631b;
+        }
+        
+        .download-btn {
+            background-color: #D97925;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1em;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .download-btn:hover {
+            background-color: #a6631b;
+        }
+        
+        img {
+            max-width: 100px;
+        }
+
+        footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: #83807B;
+        color: white;
+        padding: 5px;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        box-sizing: border-box;
+        border-top: 3px solid #D97925;
+        font-size: 18px;
+        font-family: 'Lato', sans-serif; 
+    }
+
+    footer img {
+        max-width: 60px;
+        margin-right: 10px;
+    }
+
+    footer a {
+        color: orange;
+        text-decoration: none;
+
+    }
+
+    footer div {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 0 20px; /* Adjust this value to move the elements on the left */
+        font-size: 13px;
+    }
+
+    footer a:hover {
+        text-decoration: underline;
+    }
+
+    </style>
+        
+    </style>
+</head>
+        <!-- JavaScript code for adding details dynamically and generating CSV -->
+    <script>
+        let detailsSetCounter = 0;
+    
+        function addDetailsSet() {
+            detailsSetCounter++;
+
+            var detailsContainer = document.getElementById("detailsContainer");
+            var detailsSet = document.createElement("div");
+            detailsSet.classList.add("details-set");
+
+            var html = `
+                <h3>Trench Sheet Details</h3>
+
+                <label for="contextNo${detailsSetCounter}">Context No:</label>
+                <input type="text" name="contextNo${detailsSetCounter}" class="contextNo" required><br><br>
+
+                <label for="compaction${detailsSetCounter}">Compaction:</label>
+                <select name ="compaction${detailsSetCounter}" class="compaction" required>
+                    <option value="loose">Loose</option>
+                    <option value="friable">Friable</option>
+                    <option value="firm">Firm</option>
+                </select><br><br>
+
+                <label for="colour${detailsSetCounter}">Colour:</label>
+                <input type="text" name="colour${detailsSetCounter}" class="colour" required><br><br>
+
+                <label for="composition${detailsSetCounter}">Composition:</label>
+                <select name="composition${detailsSetCounter}" class="composition" required>
+                    <option value="sand">Sand</option>
+                    <option value="siltySand">Silty Sand</option>
+                    <option value="sandySilt">Sandy Silt</option>
+                    <option value="siltyClay">Silty Clay</option>
+                    <option value="silt">Silt</option>
+                    <option value="clayeySilt">Clayey Silt</option>
+                    <option value="sandyClay">Sandy Clay</option>
+                    <option value="clay">Clay</option>
+                </select> <br><br>
+
+                <label for="inclusions${detailsSetCounter}">Inclusions:</label>
+                <input type="text" name="inclusions${detailsSetCounter}" class="inclusions" required><br><br>
+
+                <label for="interpretation${detailsSetCounter}">Interpretation:</label>
+                <select name= "interpretation${detailsSetCounter}" class="interpretation" required>
+                    <option value="topsoil">Topsoil</option>
+                    <option value="subsoil">Subsoil</option>
+                    <option value="natural">Natural</option>
+                    <option value="cut">Cut</option>
+                    <option value="fill">Fill</option>
+                    <option value="masonry">Masonry</option>
+                    <option value="skeleton">Skeleton</option>
+                    <option value="deposit">deposit</option>
+                </select><br><br>
+
+                <label for="finds${detailsSetCounter}">Finds:</label>
+                <input type="text" name="finds${detailsSetCounter}" class="finds" required><br><br>
+
+                <label for="lengthF${detailsSetCounter}">Length:</label>
+                <input type="text" name="lengthF${detailsSetCounter}" class="lengthF" required><br><br>
+                
+                <label for="widthF${detailsSetCounter}">Width:</label>
+                <input type="text" name="widthF${detailsSetCounter}" class="widthF" required><br><br>
+                
+                <label for="depthF${detailsSetCounter}">Max Depth:</label>
+                <input type="text" name="depthF${detailsSetCounter}" class="depthF" required><br><br>
+
+                <label for="sheet${detailsSetCounter}">Full Sheet:</label>
+                <select name="sheet${detailsSetCounter}" class="sheet" required>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select><br><br>
+            `;
+
+            detailsSet.innerHTML = html;
+            detailsContainer.appendChild(detailsSet);
+        }
+
+        function generateCSV() {
+            var siteCode = document.getElementById("siteCode").value;
+            var trenchNo = document.getElementById("trenchNo").value;
+            var length = document.getElementById("length").value;
+            var width = document.getElementById("width").value;
+            var maxDepth = document.getElementById("depth").value;
+            var compiledBy = document.getElementById("compiledBy").value;
+
+            if (!trenchNo) {
+                alert("Please enter a Trench No.");
+                return;
+            }
+
+            var headers = [
+                "Site Code",
+                "Trench No.",
+                "Length",
+                "Width",
+                "Max Depth",
+                "Brief Description",
+                "Context No",
+                "Compaction",
+                "Colour",
+                "Composition",
+                "Inclusions",
+                "Interpretation",
+                "Finds",
+                "LengthF",
+                "WidthF",
+                "DepthF",
+                "Full Sheet",
+                "Compiled by",
+                "Date"
+            ];
+
+            var detailsSets = document.querySelectorAll(".details-set");
+            var csvString = headers.join(',') + '\n';
+
+            detailsSets.forEach(function(detailsSet) {
+                var contextNo = detailsSet.querySelector(".contextNo").value;
+                var compaction = detailsSet.querySelector(".compaction").value;
+                var colour = detailsSet.querySelector(".colour").value;
+                var composition = detailsSet.querySelector(".composition").value;
+                var inclusions = detailsSet.querySelector(".inclusions").value;
+                var interpretation = detailsSet.querySelector(".interpretation").value;
+                var finds = detailsSet.querySelector(".finds").value;
+                var lengthF = detailsSet.querySelector(".lengthF").value;
+                var widthF = detailsSet.querySelector(".widthF").value;
+                var depthF = detailsSet.querySelector(".depthF").value;
+                var sheet = detailsSet.querySelector(".sheet").value;
+
+                var csvData = [
+                    siteCode,
+                    trenchNo,
+                    length,
+                    width,
+                    maxDepth,
+                    document.getElementById("description").value,
+                    contextNo,
+                    compaction,
+                    colour,
+                    composition,
+                    inclusions,
+                    interpretation,
+                    finds,
+                    lengthF,
+                    widthF,
+                    depthF,
+                    sheet,
+                    compiledBy,
+                    document.getElementById("date").value
+                ];
+
+                csvString += csvData.join(',') + '\n';
+            });
+
+            var blob = new Blob([csvString], { type: 'text/csv' });
+            var url = window.URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = 'Trench_' + trenchNo + '_data.csv';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+    </script>
+
+</head>
+<body>
+    <!-- Main content -->
+     <!-- Trench Sheet Headers -->
+    <h3>Trench Sheet Headers</h3>
+    <form id="trenchHeaders" method="post" action="">
+
+        <label for="siteCode">Site Code:</label>
+        <input type="text" name = "siteCode" id="siteCode" required><br>
+        
+        <label for="trenchNo">Trench No.:</label>
+        <input type="text" name = "trenchNo" id="trenchNo" required><br>
+        
+        <label for="length">Length:</label>
+        <input type="text" name = "length" id="length"required><br>
+        
+        <label for="width">Width:</label>
+        <input type="text" name = "width" id="width" required><br>
+     
+        <label for="depth">Max Depth:</label>
+        <input type="text" name="depth" id="depth" required><br><br>
+
+        <label for="description">Brief Description:</label>
+        <input type="text" name="description" id="description" required><br><br>
+        <hr>
+        
+         <!-- Trench Sheet Details -->
+        <h3>Trench Sheet Details</h3>
+        <p>If this is the first context, press <strong>add context</strong> and start from the second sets </p>
+        <label for="contextNo">Context No:</label>
+        <input type="text" name="contextNo" class="contextNo" required><br><br>
+
+        <label for="compaction">Compaction:</label>
+        <select name = "compaction" class="compaction" required>
+            <option value="selection">Select a value</option>
+            <option value="loose">Loose</option>
+            <option value="friable">Friable</option>
+            <option value="firm">Firm</option>
+        </select><br><br>
+
+        <label for="colour">Colour:</label>
+        <input type="text" name="colour" class="colour" required><br><br>
+
+        <label for="composition">Composition:</label>
+        <select name = "composition" class="composition" required>
+            <option value="selection">Select a value</option>
+            <option value="sand">Sand</option>
+            <option value="siltySand">Silty Sand</option>
+            <option value="sandySilt">Sandy Silt</option>
+            <option value="siltyClay">Silty Clay</option>
+            <option value="silt">Silt</option>
+            <option value="clayeySilt">Clayey Silt</option>
+            <option value="sandyClay">Sandy Clay</option>
+            <option value="clay">Clay</option>
+        </select><br><br>
+        
+        <label for="inclusions">Inclusions:</label>
+        <input type="text" name="inclusions" class="inclusions" required><br><br>
+        
+        <label for="interpretation">Interpretation:</label>
+        <select name = "interpretation" class="interpretation" required>
+            <option value="topsoil">Topsoil</option>
+            <option value="subsoil">Subsoil</option>
+            <option value="natural">Natural</option>
+            <option value="cut">Cut</option>
+            <option value="fill">Fill</option>
+            <option value="masonry">Masonry</option>
+            <option value="skeleton">Skeleton</option>
+            <option value="deposit">deposit</option>
+        </select><br><br>
+        
+        <label for="finds">Finds:</label>
+        <input type="text" name="finds" class="finds" required><br><br>
+        
+        <label for="lengthF">Length:</label>
+        <input type="text" name="lengthF" class="lengthF" required><br><br>
+        
+        <label for="widthF">Width:</label>
+        <input type="text" name="widthF" class="widthF" required><br><br>
+        
+        <label for="depthF">Max Depth:</label>
+        <input type="text" name="depthF" class="depthF" required><br><br>
+        
+        <label for="sheet">Full Sheet:</label>
+        <select name="sheet" class="sheet" required>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+        </select><br><br>
+        
+        <!-- Dynamic Details Container -->
+        <div id="detailsContainer"></div>
+        
+        <label for="compiledBy">Compiled by:</label>
+        <input type="text" name="compiledBy" id="compiledBy" required><br><br>
+
+        <label for="date">Date:</label>
+        <input type="date" name="date" id="date" required><br><br>
+
+        <!-- Buttons to add context and download CSV -->
+        <input type="button" value="Add Context" onclick="addDetailsSet()">
+        <br><br>
+        <input type="button" value="Download CSV" onclick="generateCSV()">
+    </form>
+    <br>
+    <!-- Footer -->
+    <footer>
+        <img src="C:\Users\Alessio\Desktop\Trench_Input\trench_data_input\trench\icon.png" alt="Logo">
+        <em>Trench Data Input</em>
+        <div>
+            <em>Alessio Graziano</em>
+            <a href="https://github.com/a-graziano/trench_data_input"><em>Github repo</em></a>
+            <em>2023</em>
+        </div>
+    </footer>
+</body>
+</html>
